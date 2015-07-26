@@ -1,0 +1,3 @@
+import(metagenomeFeatures)
+exportPattern("^[^\\.]")
+importFrom(magrittr,"%>%")
