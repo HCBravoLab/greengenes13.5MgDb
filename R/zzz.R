@@ -6,11 +6,11 @@
 {
     ns <- asNamespace(pkgname)
     path <- system.file("extdata", package=pkgname, lib.loc=libname)
-    seq_file <- system.file("inst/extdata", "gg_13_5.fasta.gz",
+    seq_file <- system.file("extdata", "gg_13_5.fasta.gz",
                           package=pkgname, lib.loc=libname)
     if(!file.exists(seq_file)){
         .getGreenGenes13.5Db(db_dir = path, db_type = "seq")
-        seq_file <- system.file("inst/extdata", "gg_13_5.fasta.gz",
+        seq_file <- system.file("extdata", "gg_13_5.fasta.gz",
                                 package=pkgname, lib.loc=libname)
     }
 
