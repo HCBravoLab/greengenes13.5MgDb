@@ -9,20 +9,15 @@
     seq_file <- system.file("extdata", "gg_13_5.fasta.gz",
                           package=pkgname, lib.loc=libname)
     if(!file.exists(seq_file)){
-        .getGreenGenes13.5Db(db_dir = path, db_type = "seq")
-        seq_file <- system.file("extdata", "gg_13_5.fasta.gz",
-                                package=pkgname, lib.loc=libname)
+        warning("Green genes 13.5 database sequence data not present, use `get_greengenesDb()` to dowload database.")
+        return()
     }
-
-    db_seq <- Biostrings::readDNAStringSet(seq_file)
-
 
     db_taxa_file <- system.file("extdata", "gg_13_5.sqlite3",
                                 package=pkgname, lib.loc=libname)
     if(!file.exists(db_taxa_file)){
-        .getGreenGenes13.5Db(db_dir = path, db_type = "tax")
-        db_taxa_file <- system.file("extdata", "gg_13_5.sqlite3",
-                                    package=pkgname, lib.loc=libname)
+        warning("Green genes 13.5 taxonomy database not present, use `get_greengenesDb()` to dowload database")
+        return()
     }
 
     metadata = list(URL = "https://greengenes.microbio.me",
@@ -30,6 +25,14 @@
                     DB_VERSION = "gg_13_5",
                     ACCESSION_DATE = "July 20, 2015")
 
+    ## load database sequence object
+    db_seq <- Biostrings::readDNAStringSet(seq_file)
+
+    ## load taxa sqlite database
+    db_taxa_file <- system.file("extdata", "gg_13_5.sqlite3",
+                                package=pkgname, lib.loc=libname)
+
+    ## initiate new MgDB object
     ggMgDb <- new("MgDb",seq = db_seq,
         taxa = db_taxa_file,
         metadata = metadata)
