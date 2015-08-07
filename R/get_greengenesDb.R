@@ -18,9 +18,10 @@
     colnames(taxa) = c("Keys","Kingdom","Phylum","Class","Order","Family","Genus","Species")
     taxa = data.frame(taxa)
     dplyr::copy_to(db_con,taxa,temporary=FALSE, indexes=list(colnames(taxa)))
+    return()
 }
 
-.getGreenGenes13.5Db <- function(db_dir, db_type, db_name = "gg_13_5",
+.buildGreenGenes13.5Db <- function(db_dir, db_type, db_name = "gg_13_5",
                                     taxa_url = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/gg_13_5_taxonomy.txt.gz",
                                     seq_url = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/gg_13_5.fasta.gz"
                                     ){
@@ -34,4 +35,23 @@
         taxonomy_file <- .fetch_db(taxa_url, db_dir)
         .load_taxa(taxonomy_file, db_con)
     }
+    print("GreenGenes database successfully downloaded, reload greengenes13.5MgDb for gg13.5MgDb")
+}
+
+#' getGreenGenes13.5Db download and build database
+#'
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples getGreenGenes13.5Db()
+getGreenGenes13.5Db <- function(pkgname="greengenes13.5MgDb"){
+    pkg_path <- system.file(package=pkgname, lib.loc=.libPaths())
+    path <- paste0(pkg_path,"/inst/extdata")
+    dir.create(path, recursive = TRUE)
+    print("Downloading sequence database")
+    .buildGreenGenes13.5Db(db_dir = path, db_type = "seq")
+    print("Downloading and building taxonomy database")
+    .buildGreenGenes13.5Db(db_dir = path, db_type = "tax")
+
 }
