@@ -21,8 +21,8 @@
 }
 
 .getGreenGenes13.5Db <- function(db_dir, db_type, db_name = "gg_13_5",
-                                    taxa_url = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/gg_13_5_taxonomy.txt.gz",
-                                    seq_url = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/gg_13_5.fasta.gz"
+                                    taxa_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5.fasta.gz",
+                                    seq_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5_taxonomy.txt.gz"
                                     ){
     if(db_type == "seq"){
         .fetch_db(seq_url, db_dir)
