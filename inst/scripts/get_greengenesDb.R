@@ -20,6 +20,7 @@ library(dplyr)
     colnames(taxa) = c("Keys","Kingdom","Phylum","Class","Order","Family","Genus","Species")
     taxa = data.frame(taxa)
     dplyr::copy_to(db_con,taxa,temporary=FALSE, indexes=list(colnames(taxa)))
+    file.remove(taxonomy_file)
 }
 
 getGreenGenes13.5Db <- function(
