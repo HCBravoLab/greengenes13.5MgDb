@@ -6,6 +6,7 @@
 {
     ns <- asNamespace(pkgname)
     path <- system.file("extdata", package=pkgname, lib.loc=libname)
+
     seq_file <- system.file("data", "gg_13_5.fasta.gz",
                             package=pkgname, lib.loc=libname)
 
