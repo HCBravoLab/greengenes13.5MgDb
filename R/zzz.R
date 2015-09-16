@@ -5,12 +5,10 @@
 .onLoad <- function(libname, pkgname)
 {
     ns <- asNamespace(pkgname)
-    path <- system.file("extdata", package=pkgname, lib.loc=libname)
-
-    seq_file <- system.file("data", "gg_13_5.fasta.gz",
+    seq_file <- system.file("extdata", "gg_13_5.fasta.gz",
                             package=pkgname, lib.loc=libname)
 
-    db_taxa_file <- system.file("data", "gg_13_5.sqlite3",
+    db_taxa_file <- system.file("extdata", "gg_13_5.sqlite3",
                                 package=pkgname, lib.loc=libname)
 
 
@@ -26,10 +24,6 @@
 
     ## load database sequence object
     db_seq <- Biostrings::readDNAStringSet(seq_file)
-
-    ## load taxa sqlite database
-    db_taxa_file <- system.file("data", "gg_13_5.sqlite3",
-                                package=pkgname, lib.loc=libname)
 
     ## initiate new MgDB object
     ggMgDb <- new("MgDb",seq = db_seq,
