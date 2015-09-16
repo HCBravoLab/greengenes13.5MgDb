@@ -1,11 +1,19 @@
 Package: greengenes13.5MgDb
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph)
-Depends: R (>= 3.2.0)
-License: What license is it under?
+Title: Greengenes 13.5 16S rRNA Database Annotation Data
+Version: 0.0.0.9001
+Author:
+    Nathan D. Olson <nolson@umias.umd.edu>,
+    Joseph Nathaniel Paulson,
+    Hector Corrada-Bravo
+Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
+Description:
+    Metagenome annotation package with for the Greengenes
+    16S rRNA Database version 13.5. Contains a MgDb-class object,
+    defined in the metagenomeFeatures package.
+Depends: R (>= 3.2.0), metagenomeFeatures (>= 0.0.0.9)
+License: Artistic-2.0
 LazyData: true
-Imports: metagenomeFeatures,
-    dplyr,
-    Biostrings
+Imports: dplyr, Biostrings, RSQLite
+URL: https://github.com/HCBravoLab/greengenes13.5MgDb
+BugReports: https://github.com/HCBravoLab/greengenes13.5MgDb/issues
+biocViews: AnnotationData, Microbiome, Metagenomics, Sequencing
