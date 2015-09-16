@@ -1,6 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-data/gg_13_5.fasta.gz
-data/gg_13_5.sqlite3
+inst/extdata/gg_13_5.fasta.gz
+inst/extdata/gg_13_5.sqlite3
 

@@ -5,7 +5,7 @@
 library(dplyr)
 .fetch_db <- function(db_url){
     f_basename <- strsplit(db_url, split = "/") %>% unlist() %>% .[length(.)]
-    f <- paste0("../../data/",f_basename)
+    f <- paste0("../extdata/",f_basename)
     download.file(db_url,destfile = f, method = "wget")
     return(f)
 }
@@ -32,7 +32,7 @@ getGreenGenes13.5Db <- function(
         .fetch_db(seq_url)
 
         # downloading taxa data and building sqlite db
-        db_taxa_file <- paste0("../../data/",db_name, ".sqlite3")
+        db_taxa_file <- paste0("../extdata/",db_name, ".sqlite3")
         db_con <- dplyr::src_sqlite(db_taxa_file, create = T)
         taxonomy_file <- .fetch_db(taxa_url)
         .load_taxa(taxonomy_file, db_con)
