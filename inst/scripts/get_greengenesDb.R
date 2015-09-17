@@ -3,11 +3,12 @@
 ### Assumes script is run from the inst/script directory of the package
 
 library(dplyr)
+library(RSQLite)
 .fetch_db <- function(db_url){
     f_basename <- strsplit(db_url, split = "/") %>% unlist() %>% .[length(.)]
-    f <- paste0("../extdata/",f_basename)
-    download.file(db_url,destfile = f, method = "wget")
-    return(f)
+    f_name <- paste0("../extdata/",f_basename)
+    download.file(url = db_url, destfile = f_name, method = "curl")
+    return(f_name)
 }
 
 .load_taxa <- function(taxonomy_file, db_con){
