@@ -3,4 +3,5 @@
 .RData
 inst/extdata/gg_13_5.fasta.gz
 inst/extdata/gg_13_5.sqlite3
+inst/extdata/gg_13_5_taxonomy.txt.gz
 
