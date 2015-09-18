@@ -10,10 +10,10 @@ Description:
     Metagenome annotation package with for the Greengenes
     16S rRNA Database version 13.5. Contains a MgDb-class object,
     defined in the metagenomeFeatures package.
-Depends: R (>= 3.2.0), metagenomeFeatures (>= 0.0.0.9)
+Depends: R (>= 3.2.0)
 License: Artistic-2.0
 LazyData: true
-Imports: dplyr, RSQLite
+Imports: metagenomeFeatures
 URL: https://github.com/HCBravoLab/greengenes13.5MgDb
 BugReports: https://github.com/HCBravoLab/greengenes13.5MgDb/issues
 biocViews: AnnotationData, Microbiome, Metagenomics, Sequencing

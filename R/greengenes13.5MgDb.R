@@ -10,9 +10,7 @@
 #' @docType package
 #' @keywords package
 #' @seealso \link[metagenomeFeatures]{MgDb-class}
-#' @import dplyr
-#' @import RSQLite
-#' @import metagenomeFeatures
+#' @importClassesFrom metagenomeFeatures MgDb
 #' @examples
 #' library(greengenes13.5MgDb)
 #' ls('package:greengenes13.5MgDb')
