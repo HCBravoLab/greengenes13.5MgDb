@@ -13,7 +13,7 @@ Description:
 Depends: R (>= 3.2.0), metagenomeFeatures (>= 0.0.0.9)
 License: Artistic-2.0
 LazyData: true
-Imports: dplyr, Biostrings, RSQLite
+Imports: dplyr, RSQLite
 URL: https://github.com/HCBravoLab/greengenes13.5MgDb
 BugReports: https://github.com/HCBravoLab/greengenes13.5MgDb/issues
 biocViews: AnnotationData, Microbiome, Metagenomics, Sequencing
