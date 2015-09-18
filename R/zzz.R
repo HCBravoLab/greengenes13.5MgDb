@@ -13,7 +13,7 @@
 
 
     if(!file.exists(seq_file) || !file.exists(db_taxa_file)){
-        print("Green genes 13.5 database data not present, use `getGreenGenes13.5Db.R` In the package inst/scripts directory to downlod the database into the package data/ directory and reinstall the package")
+        packageStartupMessage("Green genes 13.5 database data not present, use `getGreenGenes13.5Db.R` In the package inst/scripts directory to downlod the database into the package data/ directory and reinstall the package")
         ## not sure this is the best error message
     }
 
