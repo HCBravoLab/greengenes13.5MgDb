@@ -10,9 +10,6 @@
 #' @docType package
 #' @keywords package
 #' @seealso \link[metagenomeFeatures]{MgDb-class}
-#' @importClassesFrom metagenomeFeatures MgDb
-#' @importClassesFrom Biostrings DNAStringSet
-#' @importFrom Biostrings readDNAStringSet
 #' @import dplyr
 #' @import RSQLite
 #' @import metagenomeFeatures

@@ -5,8 +5,9 @@
 library(dplyr)
 library(RSQLite)
 .fetch_db <- function(db_url){
-    f_basename <- strsplit(db_url, split = "/") %>% unlist() %>% .[length(.)]
-    f_name <- paste0("../extdata/",f_basename)
+    #f_basename <- strsplit(db_url, split = "/") %>% unlist() %>% .[length(.)]
+    #f_name <- paste0("../extdata/",f_basename)
+    f_name = tempfile()
     download.file(url = db_url, destfile = f_name, method = "curl")
     return(f_name)
 }
@@ -30,7 +31,9 @@ getGreenGenes13.5Db <- function(
         taxa_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5_taxonomy.txt.gz"
 ){
         # downloading database sequence data
-        .fetch_db(seq_url)
+        seq_file <- .fetch_db(seq_url)
+        db_seq <- Biostrings::readDNAStringSet(seq_file)
+        saveRDS(db_seq, file = paste0("../extdata/",db_name,"_seq.rds"))
 
         # downloading taxa data and building sqlite db
         db_taxa_file <- paste0("../extdata/",db_name, ".sqlite3")

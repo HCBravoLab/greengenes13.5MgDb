@@ -3,6 +3,3 @@
 import(RSQLite)
 import(dplyr)
 import(metagenomeFeatures)
-importClassesFrom(Biostrings,DNAStringSet)
-importClassesFrom(metagenomeFeatures,MgDb)
-importFrom(Biostrings,readDNAStringSet)
