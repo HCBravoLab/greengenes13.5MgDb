@@ -10,7 +10,6 @@ sequence and taxonomic data for the greengenes
 database version 13.5, \url{http://greengenes.secondgenome.com}
 }
 \examples{
-library(greengenes13.5MgDb)
 ls('package:greengenes13.5MgDb')
 gg13.5MgDb
 }

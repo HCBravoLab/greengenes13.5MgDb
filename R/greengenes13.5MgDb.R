@@ -12,7 +12,6 @@
 #' @seealso \link[metagenomeFeatures]{MgDb-class}
 #' @importClassesFrom metagenomeFeatures MgDb
 #' @examples
-#' library(greengenes13.5MgDb)
 #' ls('package:greengenes13.5MgDb')
 #' gg13.5MgDb
 NA
