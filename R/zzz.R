@@ -15,7 +15,7 @@
                                 package=pkgname, lib.loc=libname)
 
     if(!file.exists(seq_file) || !file.exists(db_taxa_file)){
-        packageStartupMessage("Greengenes 13.5 database data not present, use `getGreenGenes13.5Db.R` In the package inst/scripts directory to downlod the database into the package inst/extdata/ directory and reinstall the package")
+        packageStartupMessage("Greengenes 13.5 database data not present, use `get_greengenesDb.R` In the package inst/scripts directory to downlod the database into the package inst/extdata/ directory and reinstall the package")
     }
 
     metadata = list(URL = "https://greengenes.microbio.me",
