@@ -11,9 +11,6 @@
     db_taxa_file <- system.file("extdata", "gg_13_5.sqlite3",
                                 package=pkgname, lib.loc=libname)
 
-    db_tree_file <- system.file("extdata", "gg_13_5_tree.rds",
-                                package=pkgname, lib.loc=libname)
-
     if(!file.exists(seq_file) || !file.exists(db_taxa_file)){
         packageStartupMessage("Greengenes 13.5 database data not present, use `get_greengenesDb.R` In the package inst/scripts directory to downlod the database into the package inst/extdata/ directory and reinstall the package")
     }
@@ -30,7 +27,7 @@
     ggMgDb <- new("MgDb",
                   seq = db_seq,
                   taxa_file = db_taxa_file,
-                  tree_file = db_tree_file,
+                  tree_file = "not available",
                   metadata = metadata)
 
     assign("gg13.5MgDb", ggMgDb, envir=ns)

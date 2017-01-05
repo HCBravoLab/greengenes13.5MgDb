@@ -4,7 +4,6 @@
 
 library(dplyr)
 library(RSQLite)
-library(phyloseq)
 library(Biostrings)
 
 .fetch_db <- function(db_url){
@@ -29,8 +28,7 @@ library(Biostrings)
 getGreenGenes13.5Db <- function(
         db_name = "gg_13_5",
         seq_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5.fasta.gz",
-        taxa_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5_taxonomy.txt.gz",
-        tree_url = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/gg_13_5_otus_99_annotated.tree.gz"
+        taxa_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5_taxonomy.txt.gz"
 ){
         # downloading database sequence data
         seq_file <- .fetch_db(seq_url)
@@ -42,11 +40,6 @@ getGreenGenes13.5Db <- function(
         db_con <- dplyr::src_sqlite(db_taxa_file, create = T)
         taxonomy_file <- .fetch_db(taxa_url)
         .load_taxa(taxonomy_file, db_con)
-
-        # downloading tree data and saving as ape::phylo class object
-        tree_file <- .fetch_db(tree_url)
-        db_tree <- phyloseq::read_tree_greengenes(tree_file)
-        saveRDS(db_tree, file = paste0("../extdata/",db_name,"_tree.rds"))
 
 }
 
