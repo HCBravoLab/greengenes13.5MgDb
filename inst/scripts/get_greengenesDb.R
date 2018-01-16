@@ -1,46 +1,98 @@
-### =========================================================================
-### Downloading database greengenes 13_5 database
-### Assumes script is run from the inst/script directory of the package
-
-library(dplyr)
-library(RSQLite)
+### Code to generate source files for a MgDb-object with data from the
+### Greengenes 13.5 database
+library(DECIPHER)
 library(Biostrings)
+library(metagenomeFeatures) ## Needed for the make_mgdb_sqlite function
 
-.fetch_db <- function(db_url){
-    f_name = tempfile()
-    download.file(url = db_url, destfile = f_name, method = "curl")
-    return(f_name)
+## Database URL
+db_root_url <- "ftp://greengenes.microbio.me/greengenes_release/gg_13_5"
+taxa_url <- paste0(db_root_url, "/gg_13_5_taxonomy.txt.gz")
+seq_url <- paste0(db_root_url, "/gg_13_5.fasta.gz")
+
+## RNAcentral ids - external to greengenes
+rnacentral_url <- paste0("ftp://ftp.ebi.ac.uk/pub/databases/RNAcentral",
+                          "/releases/8.0/id_mapping/database_mappings/",
+                          "greengenes.tsv")
+
+## Downloaded files
+taxa_file <- tempfile()
+seq_file <- tempfile()
+rnacentral_file <- tempfile()
+
+## MD5 check sums from initial download
+taxa_md5 <- "b6d5d28336af73ab46f3cfe89e26f654"
+seq_md5 <- "3a832c3f486ab5f311acccdddd2cb54b"
+rnacentral_md5 <- "653fe7608d6c1a4ba137f0b997844d5d"
+
+## MgDb database files name
+db_file <- "../extdata/gg13.5.sqlite"
+metadata_file <- "../extdata/gg13.5_metadata.RData"
+
+### Download database files ####################################################
+download_db <- function(url, file_name, md5){
+    ## Downloade file and check to make sure MD5 checksum matches checksum for
+    ## previously downloaded version
+
+    download.file(url,file_name)
+    new_md5 <- tools::md5sum(file_name)
+    if (md5 != new_md5) warning("checksum does not match downloaded file.")
 }
 
-.load_taxa <- function(taxonomy_file, db_con){
-    # Create the database
-    taxa=read.delim(taxonomy_file,stringsAsFactors=FALSE,header=FALSE)
-    keys = taxa[,1]
-    taxa = strsplit(taxa[,2],split="; ")
-    taxa = t(sapply(taxa,function(i){i}))
-    taxa = cbind(keys,taxa)
-    colnames(taxa) = c("Keys","Kingdom","Phylum","Class","Order","Family","Genus","Species")
-    taxa = data.frame(taxa)
-    dplyr::copy_to(db_con,taxa,temporary=FALSE, indexes=list(colnames(taxa)))
-    file.remove(taxonomy_file)
+## Taxa Data
+download_db(taxa_url, taxa_file, taxa_md5)
+
+## RNAcentral data
+download_db(rnacentral_url, rnacentral_file, rnacentral_md5)
+
+## Seq Data
+download_db(seq_url, seq_file, seq_md5)
+
+### Create SQLite DB with Taxa and Seq Data ####################################
+### Parse greengenes taxonomy
+parse_greengenes <- function(taxonomy_file){
+    taxa <- read.delim(taxonomy_file, stringsAsFactors = FALSE, header = FALSE)
+    keys <- taxa[,1]
+    taxa <- strsplit(taxa[,2],split = "; ")
+    taxa <- t(sapply(taxa,function(i){i}))
+    taxa <- cbind(keys,taxa)
+    colnames(taxa) <- c("Keys","Kingdom","Phylum","Class","Ord","Family","Genus","Species")
+
+    ## Return as a data.frame
+    data.frame(taxa)
 }
 
-getGreenGenes13.5Db <- function(
-        db_name = "gg_13_5",
-        seq_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5.fasta.gz",
-        taxa_url = "https://gembox.cbcb.umd.edu/gg135/gg_13_5_taxonomy.txt.gz"
-){
-        # downloading database sequence data
-        seq_file <- .fetch_db(seq_url)
-        db_seq <- Biostrings::readDNAStringSet(seq_file)
-        saveRDS(db_seq, file = paste0("../extdata/",db_name,"_seq.rds"))
+taxa_tbl <- parse_greengenes(taxa_file)
 
-        # downloading taxa data and building sqlite db
-        db_taxa_file <- paste0("../extdata/",db_name, ".sqlite3")
-        db_con <- dplyr::src_sqlite(db_taxa_file, create = T)
-        taxonomy_file <- .fetch_db(taxa_url)
-        .load_taxa(taxonomy_file, db_con)
+## Load RNAcentral data
+rnacentral_df <- read.csv(rnacentral_file,
+                          stringsAsFactors = FALSE,
+                          header = FALSE)
+colnames(rnacentral_df) <- c("rnacentral_ids", "Keys", "ncbi_tax_id",
+                             "RNA_type", "gene_name")
 
-}
+## Dropping RNA_type and gene_name columns
+rnacentral_df$RNA_type <- NULL
+rnacentral_df$gene_name <- NULL
 
-getGreenGenes13.5Db()
+## Adding RNAcentral and NCBI_tax ids to taxonomy table
+taxa_tbl <- dplyr::left_join(taxa_tbl, rnacentral_df)
+
+## Reading sequence data file
+seqs <- Biostrings::readDNAStringSet(seq_file)
+
+metagenomeFeatures::make_mgdb_sqlite(db_name = "greengenes13.8_97",
+                              db_file = db_file,
+                              taxa_tbl = taxa_tbl,
+                              seqs = seqs)
+
+
+
+### Database Metadata ##########################################################
+metadata <- list(ACCESSION_DATE = date(),
+                 URL = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/",
+                 DB_TYPE_NAME = "GreenGenes",
+                 DB_VERSION = "13.8 97% OTUS",
+                 DB_TYPE_VALUE = "MgDb",
+                 DB_SCHEMA_VERSION = "2.0")
+
+save(metadata, file = metadata_file)

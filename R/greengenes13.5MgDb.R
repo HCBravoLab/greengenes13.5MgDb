@@ -11,6 +11,7 @@
 #' @keywords package
 #' @seealso \link[metagenomeFeatures]{MgDb-class}
 #' @importClassesFrom metagenomeFeatures MgDb
+#' @import methods
 #' @examples
 #' ls('package:greengenes13.5MgDb')
 #' gg13.5MgDb

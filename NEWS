@@ -2,3 +2,5 @@ version 0.99.0 :
     + Pre-Release Bioconductor
 version 1.0.0 : (last updated 12/05/2016)
     + Updated onLoad function to work with the updated MgDb class definition in metagenomeFeatures version 1.5
+version 2.0.0 : (last updated 1/16/2018)
+    + Database format consistent with metagenomeFeatures version 2.0
