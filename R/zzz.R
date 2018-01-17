@@ -4,10 +4,10 @@
 
 .onAttach <- function(libname, pkgname){
 
-    db_file <- system.file("extdata", "gg_13_5.sqlite3",
+    db_file <- system.file("extdata", "gg13.5.sqlite",
                                 package = pkgname, lib.loc = libname)
 
-    metadata_file <- system.file("extdata", "gg13.5_metadata.RData",
+    metadata_file <- system.file("extdata", "gg13.5_metadata.RDS",
                                 package = pkgname, lib.loc = libname)
 
     ## Note no tree for gg13.5
@@ -20,10 +20,10 @@
 .onLoad <- function(libname, pkgname){
     ns <- asNamespace(pkgname)
 
-    db_file <- system.file("extdata", "gg_13_5.sqlite3",
+    db_file <- system.file("extdata", "gg13.5.sqlite",
                                 package = pkgname, lib.loc = libname)
 
-    metadata_file <- system.file("extdata", "gg13.5_metadata.RData",
+    metadata_file <- system.file("extdata", "gg13.5_metadata.RDS",
                                 package = pkgname, lib.loc = libname)
 
     ## Note no tree for gg13.5
@@ -31,8 +31,8 @@
     metadata <- readRDS(metadata_file)
 
     ## initiate new MgDB object
-    ggMgDb <- newMgDb(db_file = db_file,
-                      tree_file = "not available",
+    ggMgDb <- metagenomeFeatures::newMgDb(db_file = db_file,
+                      tree = NULL,
                       metadata = metadata)
 
     assign("gg13.5MgDb", ggMgDb, envir = ns)
