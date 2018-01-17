@@ -13,11 +13,10 @@ database version 13.5, \url{http://greengenes.secondgenome.com}
 ls('package:greengenes13.5MgDb')
 gg13.5MgDb
 }
-\author{
-Nathan D. Olson \email{nolson@umiacs.umd.edu}
-}
 \seealso{
 \link[metagenomeFeatures]{MgDb-class}
 }
+\author{
+Nathan D. Olson \email{nolson@umiacs.umd.edu}
+}
 \keyword{package}
-

@@ -14,4 +14,3 @@ gg13.5MgDb
 \seealso{
 \link[metagenomeFeatures]{MgDb-class}
 }
-
