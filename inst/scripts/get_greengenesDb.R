@@ -26,7 +26,7 @@ rnacentral_md5 <- "653fe7608d6c1a4ba137f0b997844d5d"
 
 ## MgDb database files name
 db_file <- "../extdata/gg13.5.sqlite"
-metadata_file <- "../extdata/gg13.5_metadata.RData"
+metadata_file <- "../extdata/gg13.5_metadata.RDS"
 
 ### Download database files ####################################################
 download_db <- function(url, file_name, md5){
@@ -51,48 +51,58 @@ download_db(seq_url, seq_file, seq_md5)
 ### Parse greengenes taxonomy
 parse_greengenes <- function(taxonomy_file){
     taxa <- read.delim(taxonomy_file, stringsAsFactors = FALSE, header = FALSE)
-    keys <- taxa[,1]
-    taxa <- strsplit(taxa[,2],split = "; ")
-    taxa <- t(sapply(taxa,function(i){i}))
-    taxa <- cbind(keys,taxa)
-    colnames(taxa) <- c("Keys","Kingdom","Phylum","Class","Ord","Family","Genus","Species")
 
-    ## Return as a data.frame
-    data.frame(taxa)
+    ## Generating a data frame with taxonomy
+    taxa_df <- data.frame(Keys = as.character(taxa[,1]), stringsAsFactors = FALSE)
+
+    taxonomy <- strsplit(taxa[,2],split = "; ")
+    taxonomy_df <- data.frame(t(sapply(taxonomy,function(i){i})),
+                                 stringsAsFactors = FALSE)
+    colnames(taxonomy_df) <- c("Kingdom","Phylum","Class","Ord",
+                               "Family","Genus","Species")
+
+    ## Return as data.frame with Keys and taxonomic heirarchy
+    cbind(taxa_df,taxonomy_df)
 }
 
 taxa_tbl <- parse_greengenes(taxa_file)
 
 ## Load RNAcentral data
-rnacentral_df <- read.csv(rnacentral_file,
+rnacentral_ids <- read.delim(rnacentral_file,
                           stringsAsFactors = FALSE,
                           header = FALSE)
-colnames(rnacentral_df) <- c("rnacentral_ids", "Keys", "ncbi_tax_id",
+
+colnames(rnacentral_ids) <- c("rnacentral_ids", "database",
+                             "Keys", "ncbi_tax_id",
                              "RNA_type", "gene_name")
 
-## Dropping RNA_type and gene_name columns
-rnacentral_df$RNA_type <- NULL
-rnacentral_df$gene_name <- NULL
+## Dropping database, RNA_type, and gene_name columns
+rnacentral_ids$database <- NULL
+rnacentral_ids$RNA_type <- NULL
+rnacentral_ids$gene_name <- NULL
+
+## Converting GG ids to character strings - ensure compatible typing
+rnacentral_ids$Keys <- as.character(rnacentral_ids$Keys)
+taxa_tbl$Keys <- as.character(taxa_tbl$Keys)
 
 ## Adding RNAcentral and NCBI_tax ids to taxonomy table
-taxa_tbl <- dplyr::left_join(taxa_tbl, rnacentral_df)
+taxa_tbl <- dplyr::left_join(taxa_tbl, rnacentral_ids)
 
 ## Reading sequence data file
 seqs <- Biostrings::readDNAStringSet(seq_file)
 
-metagenomeFeatures::make_mgdb_sqlite(db_name = "greengenes13.8_97",
+## Creating MgDb formated sqlite database
+metagenomeFeatures::make_mgdb_sqlite(db_name = "greengenes13.5",
                               db_file = db_file,
                               taxa_tbl = taxa_tbl,
                               seqs = seqs)
-
-
 
 ### Database Metadata ##########################################################
 metadata <- list(ACCESSION_DATE = date(),
                  URL = "ftp://greengenes.microbio.me/greengenes_release/gg_13_5/",
                  DB_TYPE_NAME = "GreenGenes",
-                 DB_VERSION = "13.8 97% OTUS",
+                 DB_VERSION = "13.5",
                  DB_TYPE_VALUE = "MgDb",
                  DB_SCHEMA_VERSION = "2.0")
 
-save(metadata, file = metadata_file)
+saveRDS(metadata, file = metadata_file)
