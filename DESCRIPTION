@@ -16,5 +16,5 @@ Imports:
     metagenomeFeatures (>= 1.9.9)
 URL: https://github.com/HCBravoLab/greengenes13.5MgDb
 BugReports: https://github.com/HCBravoLab/greengenes13.5MgDb/issues
-biocViews: AnnotationData, Microbiome, Metagenomics, Annotation, Infrastructure
+biocViews: AnnotationData, Microbiome
 RoxygenNote: 6.0.1
