@@ -1,9 +1,11 @@
 ###############################################
 #'  Greengenes 16S rRNA database MgDb Package.
 #'
-#' This package loads a MgDb class object with
+#' This package loads a \code{\link[metagenomeFeatures]{MgDb-class}} object with
 #' sequence and taxonomic data for the greengenes
-#' database version 13.5, \url{http://greengenes.secondgenome.com}
+#' database version 13.5, \url{http://greengenes.secondgenome.com}.
+#' Vignettes for working with \code{\link[metagenomeFeatures]{MgDb-class}}
+#' objects are in the \pkg{metagenomeFeatures} package.
 #'
 #' @name greengenes13.5MgDb-package
 #' @author Nathan D. Olson \email{nolson@@umiacs.umd.edu}
